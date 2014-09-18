@@ -104,6 +104,12 @@ if (window.jQuery === undefined)
                     return
 
                 /*
+                 * Disable redirects
+                 */
+                isRedirect = false
+                options.redirect = null
+
+                /*
                  * Error 406 is a "smart error" that returns response object that is
                  * processed in the same fashion as a successful response.
                  */
@@ -200,12 +206,18 @@ if (window.jQuery === undefined)
                  * Focus fields with errors
                  */
                 if (data['X_OCTOBER_ERROR_FIELDS']) {
-                    $.each(Object.keys(data['X_OCTOBER_ERROR_FIELDS']), function(index, fieldName){
-                        var fieldElement = form.find('[name="'+fieldName+'"], [name$="['+fieldName+']"]').filter(':enabled').first()
+                    var isFirstInvalidField = true
+                    $.each(data['X_OCTOBER_ERROR_FIELDS'], function(fieldName, fieldMessages){
+                        var fieldElement = form.find('[name="'+fieldName+'"], [name="'+fieldName+'[]"], [name$="['+fieldName+']"], [name$="['+fieldName+'][]"]').filter(':enabled').first()
                         if (fieldElement.length > 0) {
-                            fieldElement.focus()
-                            $(window).trigger('ajaxInvalidField', [fieldElement, fieldName])
-                            return false // Break loop
+
+                            var _event = jQuery.Event('ajaxInvalidField')
+                            $(window).trigger(_event, [fieldElement, fieldName, fieldMessages, isFirstInvalidField])
+
+                            if (isFirstInvalidField) {
+                                if (!_event.isDefaultPrevented()) fieldElement.focus()
+                                isFirstInvalidField = false
+                            }
                         }
                     })
                 }
@@ -236,6 +248,7 @@ if (window.jQuery === undefined)
 
         if (loading) loading.show()
 
+        $(window).trigger('ajaxBeforeSend')
         $el.trigger('ajaxPromise')
         return $.ajax(requestOptions)
             .fail(function(jqXHR, textStatus, errorThrown){

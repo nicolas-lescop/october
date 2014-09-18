@@ -12,9 +12,9 @@ use Str;
 class FormField
 {
     /**
-     * @var string Form field column name.
+     * @var string Form field name.
      */
-    public $columnName;
+    public $fieldName;
 
     /**
      * @var string If the field element names should be contained in an array.
@@ -36,6 +36,11 @@ class FormField
      * @var string Form field value.
      */
     public $value;
+
+    /**
+     * @var string Model attribute to use for the display value.
+     */
+    public $valueFrom;
 
     /**
      * @var string Specifies if this field belongs to a tab.
@@ -132,9 +137,14 @@ class FormField
      */
     public $depends;
 
-    public function __construct($columnName, $label)
+    /**
+     * Constructor.
+     * @param string $fieldName
+     * @param string $label
+     */
+    public function __construct($fieldName, $label)
     {
-        $this->columnName = $columnName;
+        $this->fieldName = $fieldName;
         $this->label = $label;
     }
 
@@ -234,6 +244,10 @@ class FormField
         if (array_key_exists('required', $config)) $this->required = $config['required'];
         if (array_key_exists('disabled', $config)) $this->disabled = $config['disabled'];
         if (array_key_exists('stretch', $config)) $this->stretch = $config['stretch'];
+
+        if (isset($config['valueFrom'])) $this->valueFrom = $config['valueFrom'];
+        else $this->valueFrom = $this->fieldName;
+
         return $config;
     }
 
@@ -263,9 +277,9 @@ class FormField
             $arrayName = $this->arrayName;
 
         if ($arrayName)
-            return $arrayName.'['.implode('][', Str::evalHtmlArray($this->columnName)).']';
+            return $arrayName.'['.implode('][', Str::evalHtmlArray($this->fieldName)).']';
         else
-            return $this->columnName;
+            return $this->fieldName;
     }
 
     /**
@@ -277,7 +291,7 @@ class FormField
         if ($this->arrayName)
             $id .= '-'.$this->arrayName;
 
-        $id .= '-'.$this->columnName;
+        $id .= '-'.$this->fieldName;
 
         if ($suffix)
             $id .= '-'.$suffix;

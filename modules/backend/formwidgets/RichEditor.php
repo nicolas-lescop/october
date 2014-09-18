@@ -41,7 +41,7 @@ class RichEditor extends FormWidgetBase
         $this->vars['stretch'] = $this->formField->stretch;
         $this->vars['size'] = $this->formField->size;
         $this->vars['name'] = $this->formField->getName();
-        $this->vars['value'] = $this->model->{$this->columnName};
+        $this->vars['value'] = $this->getLoadData();
     }
 
     /**
@@ -49,10 +49,19 @@ class RichEditor extends FormWidgetBase
      */
     public function loadAssets()
     {
-        $this->addCss('vendor/redactor/redactor.css', 'core');
-        $this->addCss('css/richeditor.css', 'core');
-        $this->addJs('vendor/redactor/redactor.js', 'core');
-        $this->addJs('js/richeditor.js', 'core');
-    }
+        // Plugins
+        $this->addJs('js/plugin.cleanup.js', 'core');
+        $this->addJs('js/plugin.fullscreen.js', 'core');
+        $this->addJs('js/plugin.figure.js', 'core');
+        $this->addJs('js/plugin.quote.js', 'core');
 
+        // Redactor
+        // $this->addCss('vendor/redactor/redactor.css', 'core');
+        $this->addJs('vendor/redactor/redactor.js', 'core');
+
+        // Rich editor
+        $this->addCss('css/richeditor.css', 'core');
+        $this->addJs('js/richeditor.js', 'core');
+
+    }
 }

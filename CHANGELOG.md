@@ -1,8 +1,15 @@
 * **Build 14x** (2014-09-xx)
+  - Added new `hint` form field type (see Backend > Forms docs).
+
+* **Build 145** (2014-09-13)
+  - Standard setting pages now have **Save** and **Save and Close** buttons.
+
+* **Build 143** (2014-09-09)
   - Various fixes to the RelationController relating to belongsToMany relations.
   - Tree Lists are now collapsed by default to better handle large data sets.
   - The `{% put %}` tag now appends by default.
   - The closing put tag now supports **overwrite**, eg: `{% endput overwrite %}`.
+  - Numerous PostgreSQL support fixes.
 
 * **Build 141** (2014-09-04)
   - Add new `dump()` Twig function (config app.debug must be true).

@@ -1,68 +1,66 @@
 @import "../../../../assets/less/core/boot.less";
 
 @richeditor-toolbar-size: 30px;
+@richeditor-zindex: 1060;
+@richeditor-gutter: 20px;
+
+@import "redactor.less";
+@import "figures.less";
+
+.field-flush .field-richeditor {
+    &, &.editor-focus {
+        border: none;
+    }
+}
 
 .field-richeditor {
     border: 1px solid @color-form-field-border;
-    &, .redactor_box, .redactor_toolbar {
+    &, .redactor_box {
         .border-radius(5px);
     }
-
-    &.editor-focus { 
-        border-color: @color-form-field-border-focus; 
+    .redactor_toolbar {
+        .border-top-radius(3px);
     }
 
-    &.size-tiny textarea { height: (@size-tiny - @richeditor-toolbar-size); }
-    &.size-small textarea { height: (@size-small - @richeditor-toolbar-size); }
-    &.size-large textarea { height: (@size-large - @richeditor-toolbar-size); }
-    &.size-huge textarea { height: (@size-huge - @richeditor-toolbar-size); }
-    &.size-giant textarea { height: (@size-giant - @richeditor-toolbar-size); }
+    &.editor-focus {
+        border-color: @color-form-field-border-focus;
+    }
 
+    &.size-tiny .redactor_editor     { height: (@size-tiny - @richeditor-toolbar-size) !important; }
+    &.size-small .redactor_editor    { height: (@size-small - @richeditor-toolbar-size) !important; }
+    &.size-large .redactor_editor    { height: (@size-large - @richeditor-toolbar-size) !important; }
+    &.size-huge .redactor_editor     { height: (@size-huge - @richeditor-toolbar-size) !important; }
+    &.size-giant .redactor_editor    { height: (@size-giant - @richeditor-toolbar-size) !important; }
+}
+
+//
+// Stretch
+//
+
+.field-richeditor.stretch {
     .redactor_box {
-        border: none;
+        display: block;
+        position: relative;
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+
         .redactor_toolbar {
-            .border-top-radius(3px);
-            .border-bottom-radius(0);
-            background: @color-form-editor-toolbar;
-            border-bottom: 1px solid @color-form-field-border;
-            .box-shadow(none);
-        }
-        iframe {
-            border: none;
-        }
-    }
-
-    &.stretch {
-        .redactor_box {
             display: block;
-            position: relative;
-            height: 100%;
+            border-bottom: none;
+            position: absolute;
+            top: 0;
             width: 100%;
-            overflow: hidden;
+        }
 
-            .redactor_toolbar {
-                display: block;
-                border-bottom: none;
-                position: absolute;
-                top: 0;
-                width: 100%;
+        .redactor_editor {
+            height: 100% !important;
+        }
 
-                > li:first-child:after {
-                    position: absolute;
-                    content: ' ';
-                    width: 100%;
-                    height: 1px;
-                    left: 0;
-                    top: 32px;
-                    background-color: @color-form-field-border;
-                }
-            }
-
-            iframe, textarea {
-                display: block;
-                position: absolute;
-                height: 100%!important;
-            }
+        iframe, textarea {
+            display: block;
+            position: absolute;
+            height: 100% !important;
         }
     }
 }
